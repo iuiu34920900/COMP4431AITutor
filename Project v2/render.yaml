@@ -1,0 +1,25 @@
+services:
+  # 1. The Backend API
+  - type: web
+    name: ai-tutor-backend
+    env: node
+    plan: free
+    region: singapore # Choose the region closest to your target users
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-tutor-db
+          property: connectionString
+      - key: HF_API_KEY
+        sync: false # You will set this manually in the Render Dashboard
+      - key: NODE_ENV
+        value: production
+
+# 2. The PostgreSQL Database
+databases:
+  - name: ai-tutor-db
+    plan: free # Note: Render free databases expire after 90 days
+    region: singapore
